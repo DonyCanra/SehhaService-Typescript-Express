@@ -7,7 +7,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
 
   try {
-    // Cek user berdasarkan email
     const userResult = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
     const user = userResult.rows[0];
 
@@ -16,14 +15,12 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Verifikasi password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       res.status(401).json({ message: "Invalid credentials" });
       return;
     }
 
-    // Ambil fasilitas (hospitals) yang dimiliki user
     const hospitalsResult = await pool.query(
       `SELECT f.id, f.name 
        FROM facilities f 
@@ -33,7 +30,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     );
     const hospitals = hospitalsResult.rows;
 
-    // Ambil role user
     const roleResult = await pool.query(
       `SELECT r.id, r.name, r.facility_id 
        FROM roles r 
@@ -42,7 +38,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     );
     const role = roleResult.rows[0] || null;
 
-    // Ambil permissions berdasarkan role
     let permissions: string[] = [];
     if (role) {
       const permissionsResult = await pool.query(
@@ -55,7 +50,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       permissions = permissionsResult.rows.map((row) => row.code);
     }
 
-    // Buat payload JWT dengan data lengkap
     const tokenPayload = {
       userId: user.id,
       email: user.email,
@@ -73,10 +67,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       permissions,
     };
 
-    // Generate JWT token
     const token = jwt.sign(tokenPayload, process.env.JWT_SECRET as string, { expiresIn: "1h" });
 
-    // Kirim response dengan token dan data user
     res.json({ token, user: dataUser });
     return;
   } catch (err) {

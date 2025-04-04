@@ -1,9 +1,9 @@
 import express from "express";
-import { getAllUsers } from "../controllers/usersController"; // Pastikan impor fungsi spesifik
+import { getAllUsers, getUsersByFacility } from "../controllers/usersController";
 
 const router = express.Router();
 
-// Define the route to get all users
-router.get("/", getAllUsers); // Gunakan fungsi getAllUsers secara langsung
+router.get("/", getAllUsers);
+router.get("/:facilityId", getUsersByFacility);
 
 export default router;

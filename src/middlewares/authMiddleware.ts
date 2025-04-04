@@ -10,7 +10,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
 
   try {
     const decoded = verifyJwt(token);
-    (req as any).user = decoded; // Simpan data user di request
+    (req as any).user = decoded;
     next();
   } catch (error) {
     res.status(401).json({ message: "Invalid Token" });
