@@ -43,10 +43,18 @@ export const getUsersByFacility = async (req: Request, res: Response): Promise<v
 
   try {
     const query = `
-      SELECT u.id, u.username, u.email, uf.facility_id
-      FROM user_facilities uf
-      JOIN users u ON uf.user_id = u.id
-      WHERE uf.facility_id = $1
+        SELECT 
+          u.id AS user_id,
+          u.username,
+          u.email,
+          u.status,
+          u.role_id,
+          r.name AS role_name,
+          uf.facility_id
+        FROM user_facilities uf
+        JOIN users u ON uf.user_id = u.id
+        JOIN roles r ON u.role_id = r.id
+        WHERE uf.facility_id = $1;
     `;
 
     const result = await pool.query(query, [facilityId]);

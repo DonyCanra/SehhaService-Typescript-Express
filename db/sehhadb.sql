@@ -11,9 +11,10 @@ CREATE TABLE users (
     username VARCHAR(255) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    status VARCHAR(50) DEFAULT 'Active',
     first_name VARCHAR(100),
     last_name VARCHAR(100),
-    role_id INT REFERENCES roles(id) ON DELETE SET NULL, -- User hanya bisa memiliki satu role
+    role_id INT REFERENCES roles(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -50,22 +51,22 @@ INSERT INTO facilities (name, address, contact_number, email) VALUES
 
 -- Insert data ke tabel roles
 INSERT INTO roles (facility_id, name) VALUES
-(1, 'admin'),   -- Admin di RS Sehat
-(1, 'doctor'),  -- Dokter di RS Sehat
-(2, 'nurse');   -- Perawat di Klinik Medika
+(1, 'admin'),
+(1, 'doctor'),
+(2, 'nurse');
 
 -- Insert data ke tabel users
-INSERT INTO users (username, email, password, first_name, last_name, role_id) VALUES
-('budi123', 'budi@example.com', 'hashedpassword1', 'Budi', 'Santoso', 1),  -- Budi sebagai Admin RS Sehat
-('andi456', 'andi@example.com', 'hashedpassword2', 'Andi', 'Wijaya', 2),  -- Andi sebagai Dokter RS Sehat
-('siti789', 'siti@example.com', 'hashedpassword3', 'Siti', 'Rahma', 3);  -- Siti sebagai Perawat di Klinik Medika
+INSERT INTO users (username, email, password, status, first_name, last_name, role_id) VALUES
+('donycanra', 'donycanra@gmail.com', 'hashedpassword1', "Active", 'Budi', 'Santoso', 1),
+('andi456', 'andi@example.com', 'hashedpassword2', "InActive", 'Andi', 'Wijaya', 2),
+('siti789', 'siti@example.com', 'hashedpassword3', "Active", 'Siti', 'Rahma', 3);
 
 -- Insert data ke tabel user_facilities (Menghubungkan users dengan facilities)
 INSERT INTO user_facilities (user_id, facility_id) VALUES
-(1, 1), -- Budi bekerja di RS Sehat
-(2, 1), -- Andi bekerja di RS Sehat
-(3, 2), -- Siti bekerja di Klinik Medika
-(1, 2); -- Budi juga bekerja di Klinik Medika
+(1, 1),
+(2, 1),
+(3, 2),
+(1, 2);
 
 -- Insert data ke tabel permissions
 INSERT INTO permissions (code, description) VALUES

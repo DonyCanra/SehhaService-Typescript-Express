@@ -17,7 +17,7 @@ app.use(express.json()); // Middleware to parse JSON bodies
 routes(app);
 
 app.get("/", (req, res) => {
-  res.send("API is running...");
+  res.send("Wellcome to the API SEHHA APP");
 });
 
 // Database Connection Check
