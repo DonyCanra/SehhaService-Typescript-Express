@@ -9,5 +9,5 @@ export const generateJwt = (userId: number, email: string, username: string): st
 };
 
 export const verifyJwt = (token: string) => {
-  return jwt.verify(token, process.env.JWT_SECRET || "your_jwt_secret");
+  return jwt.verify(token, process.env.JWT_SECRET || "sehha-app");
 };
